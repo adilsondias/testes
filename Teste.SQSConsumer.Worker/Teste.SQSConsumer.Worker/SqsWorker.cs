@@ -86,11 +86,11 @@ public class SqsWorker(
     private async Task ProcessarMensagemAsync(Message messagemSQS, CancellationToken cancellationToken)
     {
         var messageId = messagemSQS.MessageId;
-        using var scope = logger.BeginScope(new
+        using var scope = logger.BeginScope(new Dictionary<string, object>()
         {
-            MessageId = messageId,
-            ReceiveCount = ObterQuantidadeRecebimento(messagemSQS),
-            _parametrosAWS.SQS.QueueUrl
+            ["MessageId"] = messageId,
+            ["ReceiveCount"] = ObterQuantidadeRecebimento(messagemSQS),
+            ["QueueUrl"] = _parametrosAWS.SQS.QueueUrl
         });
 
         logger.LogInformation("Iniciando processamento da mensagem.");
